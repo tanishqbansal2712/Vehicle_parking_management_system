@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard - Vehicle Parking App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: #1b3a1b;
+            color: #e0f2e9;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        h2, h4 {
+            color: #a5d6a7;
+            margin-bottom: 20px;
+        }
+        .btn {
+            font-weight: 600;
+            border-radius: 6px;
+            padding: 8px 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-secondary {
+            background-color: #4a794a;
+            color: #dcedc8;
+            border: none;
+            margin-right: 12px;
+        }
+        .btn-secondary:hover {
+            background-color: #6ba96b;
+            box-shadow: 0 0 8px #a5d6a7;
+        }
+        .btn-primary {
+            background-color: #82c784;
+            color: #1b3a1b;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #a5d6a7;
+            box-shadow: 0 0 8px #dcedc8;
+        }
+        .btn-warning {
+            background-color: #f9a825;
+            color: #3e2723;
+            border: none;
+        }
+        .btn-warning:hover {
+            background-color: #ffb74d;
+            box-shadow: 0 0 8px #ffd54f;
+        }
+        .btn-danger {
+            background-color: #c62828;
+            color: #fff;
+            border: none;
+        }
+        .btn-danger:hover {
+            background-color: #ef5350;
+            box-shadow: 0 0 8px #ef9a9a;
+        }
+        .card {
+            background-color: #2c5d2c;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(72, 126, 72, 0.5);
+        }
+        .card h5 {
+            margin-bottom: 8px;
+            color: #dcedc8;
+        }
+        .card p {
+            margin-bottom: 6px;
+            color: #b2dfdb;
+        }
+        ul {
+            list-style: none;
+            padding-left: 0;
+            color: #c8e6c9;
+        }
+        ul li {
+            padding: 6px 0;
+            border-bottom: 1px solid #4a794a;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .btn {
+                display: block;
+                margin-bottom: 10px;
+                width: 100%;
+                text-align: center;
+            }
+            .btn-secondary {
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="alert alert-info">
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+    <h2>Admin Dashboard</h2>
+    <a href="{{ url_for('auth.logout') }}" class="btn btn-secondary">Logout</a>
+    <a href="{{ url_for('admin.create_lot') }}" class="btn btn-primary">Add Parking Lot</a>
+   
+ 
+    <h4>All Parking Lots</h4>
+    {% for lot in lots %}
+        <div class="card">
+            <h5>{{ lot.name }}</h5>
+            <p>{{ lot.address }} - {{ lot.pincode }}</p>
+            <p>Price per hour: ₹{{ lot.price_per_hour }}</p>
+            <p>Total spots: {{ lot.max_spots }}</p>
+            <p>Available: {{ lot.spots|selectattr('status', 'equalto', 'A')|list|length }}</p>
+            <a href="{{ url_for('admin.edit_lot', lot_id=lot.id) }}" class="btn btn-warning">Edit</a>
+            <a href="{{ url_for('admin.delete_lot', lot_id=lot.id) }}" class="btn btn-danger">Delete</a>
+        </div>
+    {% endfor %}
+   
+    <h4>Registered Users</h4>
+    <ul>
+        {% for user in users %}
+            <li>{{ user.username }} - {{ user.email }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
