@@ -165,7 +165,4 @@ Vehicle_parking_management_system/
 4. Push to the branch: `git push origin feature/your-feature-name`
 5. Open a Pull Request
 ---
- 
-<p align="center">Made with ❤️ by <a href="https://github.com/tanishqbansal2712">Tanishq Bansal</a></p>
-
 
